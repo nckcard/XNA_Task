@@ -7,7 +7,7 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>B:\Documents\Visual Studio 2010\Projects\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Debug\Content\Balance.xnb</Output>
+      <Output>C:\Users\Nicholas\XNA_Task\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Debug\Content\Balance.xnb</Output>
       <Time>2014-01-13T21:36:46.1051516-05:00</Time>
     </Item>
     <Item>
@@ -16,7 +16,7 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>B:\Documents\Visual Studio 2010\Projects\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Debug\Content\circle.xnb</Output>
+      <Output>C:\Users\Nicholas\XNA_Task\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Debug\Content\circle.xnb</Output>
       <Time>2014-01-14T23:31:47.2494236-05:00</Time>
     </Item>
     <Item>
@@ -25,7 +25,7 @@
       <Importer>FontDescriptionImporter</Importer>
       <Processor>FontDescriptionProcessor</Processor>
       <Options>None</Options>
-      <Output>B:\Documents\Visual Studio 2010\Projects\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Debug\Content\var0.xnb</Output>
+      <Output>C:\Users\Nicholas\XNA_Task\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Debug\Content\var0.xnb</Output>
       <Time>2014-01-16T23:31:21.3443469-05:00</Time>
     </Item>
     <BuildSuccessful>true</BuildSuccessful>
@@ -35,10 +35,10 @@
       <TargetProfile>Reach</TargetProfile>
       <BuildConfiguration>Debug</BuildConfiguration>
       <CompressContent>false</CompressContent>
-      <RootDirectory>B:\Documents\Visual Studio 2010\Projects\WindowsGame1\WindowsGame1\WindowsGame1Content\</RootDirectory>
-      <LoggerRootDirectory>B:\Documents\Visual Studio 2010\Projects\WindowsGame1\WindowsGame1\WindowsGame1\</LoggerRootDirectory>
-      <IntermediateDirectory>B:\Documents\Visual Studio 2010\Projects\WindowsGame1\WindowsGame1\WindowsGame1\obj\x86\Debug\</IntermediateDirectory>
-      <OutputDirectory>B:\Documents\Visual Studio 2010\Projects\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Debug\Content\</OutputDirectory>
+      <RootDirectory>C:\Users\Nicholas\XNA_Task\WindowsGame1\WindowsGame1\WindowsGame1Content\</RootDirectory>
+      <LoggerRootDirectory>C:\Users\Nicholas\XNA_Task\WindowsGame1\WindowsGame1\WindowsGame1\</LoggerRootDirectory>
+      <IntermediateDirectory>C:\Users\Nicholas\XNA_Task\WindowsGame1\WindowsGame1\WindowsGame1\obj\x86\Debug\</IntermediateDirectory>
+      <OutputDirectory>C:\Users\Nicholas\XNA_Task\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Debug\Content\</OutputDirectory>
     </Settings>
     <Assemblies>
       <Assembly>

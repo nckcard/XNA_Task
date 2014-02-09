@@ -7,3 +7,12 @@ B:\Documents\Visual Studio 2010\Projects\WindowsGame1\WindowsGame1\WindowsGame1\
 B:\Documents\Visual Studio 2010\Projects\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Debug\Content\Balance.xnb
 B:\Documents\Visual Studio 2010\Projects\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Debug\Content\circle.xnb
 B:\Documents\Visual Studio 2010\Projects\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Debug\Content\var0.xnb
+C:\Users\Nicholas\XNA_Task\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Debug\Content\Balance.xnb
+C:\Users\Nicholas\XNA_Task\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Debug\Content\circle.xnb
+C:\Users\Nicholas\XNA_Task\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Debug\Content\var0.xnb
+C:\Users\Nicholas\XNA_Task\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Debug\WindowsGame1.exe
+C:\Users\Nicholas\XNA_Task\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Debug\WindowsGame1.pdb
+C:\Users\Nicholas\XNA_Task\WindowsGame1\WindowsGame1\WindowsGame1\obj\x86\Debug\WindowsGame1.csprojResolveAssemblyReference.cache
+C:\Users\Nicholas\XNA_Task\WindowsGame1\WindowsGame1\WindowsGame1\obj\x86\Debug\Microsoft.Xna.Framework.RuntimeProfile.txt
+C:\Users\Nicholas\XNA_Task\WindowsGame1\WindowsGame1\WindowsGame1\obj\x86\Debug\WindowsGame1.exe
+C:\Users\Nicholas\XNA_Task\WindowsGame1\WindowsGame1\WindowsGame1\obj\x86\Debug\WindowsGame1.pdb

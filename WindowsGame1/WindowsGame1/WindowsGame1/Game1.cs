@@ -28,9 +28,12 @@ namespace WindowsGame1
         static int scale2 = (int)(1/scale);
 
         static double refreshRate = 0.0167;
-        public double lambda = 1;
+        public double lambda = 0.5;
+        public double gain = 20;
         public double output;
         public double outputOld = 0;
+        public double time = 0;
+        public float MouseXi, MouseYi;
 
         //DECLARE DRAWING SUPPORT
         Texture2D circle0;
@@ -79,10 +82,10 @@ namespace WindowsGame1
             // TODO: use this.Content to load your game content here
             // LOAD PICTURES< BUILD RECTANGLES
             circle0 = Content.Load<Texture2D>("circle");
-            origin.X = circle0.Width / 2;
-            origin.Y = circle0.Height / 2;
-            spritePosition.X = (WindowWidth/2 - scale*(origin.X));
-            spritePosition.Y = (WindowHeight/2 - scale*(origin.Y));
+            origin.X = WindowWidth/2 - scale*(circle0.Width / 2);
+            origin.Y = WindowHeight/2 - scale*(circle0.Height / 2);
+            spritePosition.X = origin.X;
+            spritePosition.Y = origin.Y;
 
             rect0 = new Texture2D(GraphicsDevice, 1, 1);
             rect0.SetData(new[] { Color.White });
@@ -105,6 +108,7 @@ namespace WindowsGame1
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime) //GETS CALLED EVERY FRAME
         {
+            
             // Allows the game to exit
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
@@ -117,16 +121,26 @@ namespace WindowsGame1
             int MinX = 0;
 
             MouseState ms = Mouse.GetState();
-            float MouseX = ms.X;
-            float MouseY = ms.Y;
-            Vector2 MouseXY = new Vector2(ms.X, 0);
+            if (time == 0)
+            {
+               MouseXi = ms.X;
+               MouseYi = ms.Y;
+            }
+            float MouseX = ms.X - MouseXi + origin.X+10;
+            float MouseY = ms.Y - MouseYi + origin.Y+10;
+            Vector2 MouseXY = new Vector2(MouseX, 0);
 
-            //spritePosition += spriteSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
-            //spriteSpeed.X = (spritePosition.X - MouseXY.X) / 100 + (spritePosition.X - WindowWidth / 2)/100;
+
             spriteSpeed.Y = 0;
-            //spritePosition += spriteSpeed;
 
-            output = Math.Exp(lambda * refreshRate)*outputOld + (Math.Exp(lambda * refreshRate)-1)*((-1*MouseX + origin.X)/50);
+            if ((Math.Abs(spritePosition.X-origin.X) - 250) < 0)
+            {
+                output = Math.Exp(lambda * refreshRate) * outputOld + (Math.Exp(lambda * refreshRate) - 1) * gain *((origin.X - MouseX) / (WindowWidth));
+            }
+            else
+            {
+                output = 0;
+            }
             float outputF = Convert.ToSingle(output);
             spritePosition.X += outputF;
 
@@ -145,6 +159,7 @@ namespace WindowsGame1
 
             frame++;
             outputOld = output;
+            time++;
             base.Update(gameTime);
         }
 
@@ -156,25 +171,23 @@ namespace WindowsGame1
         {
             GraphicsDevice.Clear(Color.DimGray);
             
-            // TODO: Add your drawing code here
-
-     
-            //Draw balance
             spriteBatch.Begin();
-            //spriteBatch.Draw(balance0, drawRectangle0, Color.White);
-            //balance1.Draw(spriteBatch);
+
             spriteBatch.Draw(rect0, new Vector2(150f, 150f), null, Color.WhiteSmoke, 0f, Vector2.Zero, new Vector2(500f, 500f), SpriteEffects.None, 0f);
             spriteBatch.Draw(rect0, new Vector2(350f, 350f), null, Color.White, 0f, Vector2.Zero, new Vector2(100f, 100f), SpriteEffects.None, 0f);
 
-            if (spritePosition.X > ((WindowWidth / 2) - 20))
-            {
-                if (spritePosition.X < ((WindowWidth / 2) + 20))
+            if ((spritePosition.X-origin.X > -50) && (spritePosition.X-origin.X < 50))
                 {
                     spriteBatch.Draw(circle0, spritePosition, null, Color.Green, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
                 }
                 else spriteBatch.Draw(circle0, spritePosition, null, Color.White, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
-            }
-            else spriteBatch.Draw(circle0, spritePosition, null, Color.White, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
+
+            MouseState ms2 = Mouse.GetState();
+            float MouseX2 = ms2.X - MouseXi + origin.X+10;
+            float MouseY2 = ms2.Y - MouseYi + origin.Y+10;
+            Vector2 MouseXY2 = new Vector2(MouseX2, 0);
+            spriteBatch.Draw(circle0, MouseXY2, null, Color.Green, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
+
             DrawText(output);
             spriteBatch.End(); 
             base.Draw(gameTime);

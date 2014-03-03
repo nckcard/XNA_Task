@@ -1,3 +1,5 @@
 Content\Balance.xnb
 Content\circle.xnb
 Content\var0.xnb
+Content\start.xnb
+Content\exit.xnb

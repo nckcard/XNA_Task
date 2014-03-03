@@ -28,6 +28,24 @@
       <Output>C:\Users\Nicholas\XNA_Task\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Debug\Content\var0.xnb</Output>
       <Time>2014-01-16T23:31:21.3443469-05:00</Time>
     </Item>
+    <Item>
+      <Source>start.png</Source>
+      <Name>start</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Nicholas\XNA_Task\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Debug\Content\start.xnb</Output>
+      <Time>2014-03-02T14:09:03.3072692-05:00</Time>
+    </Item>
+    <Item>
+      <Source>exit.png</Source>
+      <Name>exit</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\Nicholas\XNA_Task\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Debug\Content\exit.xnb</Output>
+      <Time>2014-03-02T14:09:11.1687435-05:00</Time>
+    </Item>
     <BuildSuccessful>true</BuildSuccessful>
     <Settings>
       <ContentProjectGUID>{A17A1DF5-7733-46FC-8D9F-B102B68FECEA}</ContentProjectGUID>

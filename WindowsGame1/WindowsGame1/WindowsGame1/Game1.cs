@@ -19,6 +19,24 @@ namespace WindowsGame1
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
+        //menu stuff
+        private Texture2D startButton;
+        private Texture2D exitButton;
+        private Vector2 startButtonPosition;
+        private Vector2 exitButtonPosition;
+        enum GameState
+        {
+            StartMenu,
+            Playing
+        }
+        private GameState gameState;
+        MouseState mouseState;
+        MouseState previousMouseState;
+
+        //timer stuff
+        float timer;
+        int timecounter;
+
         SpriteFont font;
 
         static int WindowWidth = 800;
@@ -29,6 +47,7 @@ namespace WindowsGame1
 
         static double refreshRate = 0.0167;
         public double lambda = 0.5;
+        public double lambdaRate = 0.0001;
         public double gain = 20;
         public double output;
         public double outputOld = 0;
@@ -64,6 +83,19 @@ namespace WindowsGame1
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+            //enable mousepointer
+            IsMouseVisible = true;
+
+            // set button positions
+            startButtonPosition = new Vector2((GraphicsDevice.Viewport.Width / 2) - 50, 200);
+            exitButtonPosition = new Vector2((GraphicsDevice.Viewport.Width / 2) - 50, 250);
+
+            // set gamestate to start menu
+            gameState = GameState.StartMenu;
+
+            //get the mouse state
+            mouseState = Mouse.GetState();
+            previousMouseState = mouseState;
 
             base.Initialize();
         }
@@ -78,6 +110,8 @@ namespace WindowsGame1
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
             font = Content.Load<SpriteFont>("var0");
+            startButton = Content.Load<Texture2D>(@"start");
+            exitButton = Content.Load<Texture2D>(@"exit");
 
             // TODO: use this.Content to load your game content here
             // LOAD PICTURES< BUILD RECTANGLES
@@ -113,53 +147,68 @@ namespace WindowsGame1
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
 
-            // TODO: Add your update logic here
-            //update balance
-            //balance1.Update();
-
             int MaxX = WindowWidth - ((circle0.Width)/scale2);
             int MinX = 0;
 
-            MouseState ms = Mouse.GetState();
-            if (time == 0)
+            if (gameState == GameState.Playing)
             {
-               MouseXi = ms.X;
-               MouseYi = ms.Y;
+                //Timer
+                timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                timecounter += (int)timer;
+                if (timer >= 1.0F) timer = 0F;
+
+                //mouse
+                MouseState ms = Mouse.GetState();
+                if (time == 0)
+                {
+                    MouseXi = ms.X;
+                    MouseYi = ms.Y;
+                }
+                float MouseX = ms.X - MouseXi + origin.X + 10;
+                float MouseY = ms.Y - MouseYi + origin.Y + 10;
+                Vector2 MouseXY = new Vector2(MouseX, 0);
+
+                //unstable system
+                spriteSpeed.Y = 0;
+                lambda += lambdaRate * timecounter;
+                if ((Math.Abs(spritePosition.X - origin.X) - 250) < 0)
+                {
+                    output = Math.Exp(lambda * refreshRate) * outputOld - (Math.Exp(lambda * refreshRate) - 1) * gain * ((origin.X - MouseX) / (WindowWidth));
+                }
+                else
+                {
+                    output = 0;
+                }
+                float outputF = Convert.ToSingle(output);
+                spritePosition.X += outputF;
+
+                // Check for bounce.
+                if (spritePosition.X > MaxX)
+                {
+                    spriteSpeed.X *= -1;
+                    spritePosition.X = MaxX;
+                }
+
+                else if (spritePosition.X < MinX)
+                {
+                    spriteSpeed.X *= -1;
+                    spritePosition.X = MinX;
+                }
+
+                frame++;
+                outputOld = output;
+                time++;
             }
-            float MouseX = ms.X - MouseXi + origin.X+10;
-            float MouseY = ms.Y - MouseYi + origin.Y+10;
-            Vector2 MouseXY = new Vector2(MouseX, 0);
-
-
-            spriteSpeed.Y = 0;
-
-            if ((Math.Abs(spritePosition.X-origin.X) - 250) < 0)
+            //wait for mouseclick
+            mouseState = Mouse.GetState();
+            if (previousMouseState.LeftButton == ButtonState.Pressed && mouseState.LeftButton == ButtonState.Released)
             {
-                output = Math.Exp(lambda * refreshRate) * outputOld + (Math.Exp(lambda * refreshRate) - 1) * gain *((origin.X - MouseX) / (WindowWidth));
-            }
-            else
-            {
-                output = 0;
-            }
-            float outputF = Convert.ToSingle(output);
-            spritePosition.X += outputF;
-
-            // Check for bounce.
-            if (spritePosition.X > MaxX)
-            {
-                spriteSpeed.X *= -1;
-                spritePosition.X = MaxX;
+                MouseClicked(mouseState.X, mouseState.Y);
             }
 
-            else if (spritePosition.X < MinX)
-            {
-                spriteSpeed.X *= -1;
-                spritePosition.X = MinX;
-            }
+            previousMouseState = mouseState;
 
-            frame++;
-            outputOld = output;
-            time++;
+ 
             base.Update(gameTime);
         }
 
@@ -173,22 +222,33 @@ namespace WindowsGame1
             
             spriteBatch.Begin();
 
-            spriteBatch.Draw(rect0, new Vector2(150f, 150f), null, Color.WhiteSmoke, 0f, Vector2.Zero, new Vector2(500f, 500f), SpriteEffects.None, 0f);
-            spriteBatch.Draw(rect0, new Vector2(350f, 350f), null, Color.White, 0f, Vector2.Zero, new Vector2(100f, 100f), SpriteEffects.None, 0f);
+            // start menu
+            if (gameState == GameState.StartMenu)
+            {
+                spriteBatch.Draw(startButton, startButtonPosition, Color.White);
+                spriteBatch.Draw(exitButton, exitButtonPosition, Color.White);
+            }
 
-            if ((spritePosition.X-origin.X > -50) && (spritePosition.X-origin.X < 50))
+            // play game
+            if (gameState == GameState.Playing)
+            {
+                spriteBatch.Draw(rect0, new Vector2(150f, 150f), null, Color.WhiteSmoke, 0f, Vector2.Zero, new Vector2(500f, 500f), SpriteEffects.None, 0f);
+                spriteBatch.Draw(rect0, new Vector2(350f, 350f), null, Color.White, 0f, Vector2.Zero, new Vector2(100f, 100f), SpriteEffects.None, 0f);
+
+                if ((spritePosition.X - origin.X > -50) && (spritePosition.X - origin.X < 50))
                 {
                     spriteBatch.Draw(circle0, spritePosition, null, Color.Green, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
                 }
                 else spriteBatch.Draw(circle0, spritePosition, null, Color.White, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
 
-            MouseState ms2 = Mouse.GetState();
-            float MouseX2 = ms2.X - MouseXi + origin.X+10;
-            float MouseY2 = ms2.Y - MouseYi + origin.Y+10;
-            Vector2 MouseXY2 = new Vector2(MouseX2, 0);
-            spriteBatch.Draw(circle0, MouseXY2, null, Color.Green, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
+                MouseState ms2 = Mouse.GetState();
+                float MouseX2 = ms2.X - MouseXi + origin.X + 10;
+                float MouseY2 = ms2.Y - MouseYi + origin.Y + 10;
+                Vector2 MouseXY2 = new Vector2(MouseX2, 0);
+                spriteBatch.Draw(circle0, MouseXY2, null, Color.Green, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
 
-            DrawText(output);
+                DrawText(lambda);
+            }
             spriteBatch.End(); 
             base.Draw(gameTime);
         }
@@ -210,6 +270,28 @@ namespace WindowsGame1
                 doubleVal, stringVal);
 
             return stringVal;
+        }
+
+        void MouseClicked(int x, int y)
+        {
+            //creates a rectangle of 10x10 around the place where the mouse was clicked
+            Rectangle mouseClickRect = new Rectangle(x, y, 10, 10);
+
+            //check the startmenu
+            if (gameState == GameState.StartMenu)
+            {
+                Rectangle startButtonRect = new Rectangle((int)startButtonPosition.X, (int)startButtonPosition.Y, 100, 20);
+                Rectangle exitButtonRect = new Rectangle((int)exitButtonPosition.X, (int)exitButtonPosition.Y, 100, 20);
+
+                if (mouseClickRect.Intersects(startButtonRect)) //player clicked start button
+                {
+                    gameState = GameState.Playing;
+                }
+                else if (mouseClickRect.Intersects(exitButtonRect)) //player clicked exit button
+                {
+                    Exit();
+                }
+            }
         }
     }
 }

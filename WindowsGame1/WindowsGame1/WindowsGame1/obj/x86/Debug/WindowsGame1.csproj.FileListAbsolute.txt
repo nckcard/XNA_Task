@@ -16,3 +16,5 @@ C:\Users\Nicholas\XNA_Task\WindowsGame1\WindowsGame1\WindowsGame1\obj\x86\Debug\
 C:\Users\Nicholas\XNA_Task\WindowsGame1\WindowsGame1\WindowsGame1\obj\x86\Debug\Microsoft.Xna.Framework.RuntimeProfile.txt
 C:\Users\Nicholas\XNA_Task\WindowsGame1\WindowsGame1\WindowsGame1\obj\x86\Debug\WindowsGame1.exe
 C:\Users\Nicholas\XNA_Task\WindowsGame1\WindowsGame1\WindowsGame1\obj\x86\Debug\WindowsGame1.pdb
+C:\Users\Nicholas\XNA_Task\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Debug\Content\start.xnb
+C:\Users\Nicholas\XNA_Task\WindowsGame1\WindowsGame1\WindowsGame1\bin\x86\Debug\Content\exit.xnb

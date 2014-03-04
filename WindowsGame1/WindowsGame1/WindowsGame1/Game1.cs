@@ -47,12 +47,19 @@ namespace WindowsGame1
 
         static double refreshRate = 0.0167;
         public double lambda = 0.5;
-        public double lambdaRate = 0.0001;
+        public double lambdaRate = 0.1;
         public double gain = 20;
         public double output;
         public double outputOld = 0;
         public double time = 0;
         public float MouseXi, MouseYi;
+        public int MaxX;
+        public int MinX;
+        public int BoxWidth = 500;
+
+        //strings
+        public string lambdastr = "lambda";
+        public string timestr = "elapsed time";
 
         //DECLARE DRAWING SUPPORT
         Texture2D circle0;
@@ -147,15 +154,19 @@ namespace WindowsGame1
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
 
-            int MaxX = WindowWidth - ((circle0.Width)/scale2);
-            int MinX = 0;
+            MaxX = (WindowWidth / 2) + (BoxWidth / 2) - ((circle0.Width) / scale2 / 2);
+            MinX = (WindowWidth / 2) - (BoxWidth / 2) - ((circle0.Width) / scale2 / 2);
 
             if (gameState == GameState.Playing)
             {
                 //Timer
                 timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
                 timecounter += (int)timer;
-                if (timer >= 1.0F) timer = 0F;
+                if (timer >= 1.0F)
+                {
+                    timer = 0F;
+                    lambda += lambdaRate;
+                }
 
                 //mouse
                 MouseState ms = Mouse.GetState();
@@ -170,7 +181,6 @@ namespace WindowsGame1
 
                 //unstable system
                 spriteSpeed.Y = 0;
-                lambda += lambdaRate * timecounter;
                 if ((Math.Abs(spritePosition.X - origin.X) - 250) < 0)
                 {
                     output = Math.Exp(lambda * refreshRate) * outputOld - (Math.Exp(lambda * refreshRate) - 1) * gain * ((origin.X - MouseX) / (WindowWidth));
@@ -185,14 +195,20 @@ namespace WindowsGame1
                 // Check for bounce.
                 if (spritePosition.X > MaxX)
                 {
-                    spriteSpeed.X *= -1;
-                    spritePosition.X = MaxX;
+                    spritePosition.X = origin.X;
+                    outputOld = 0;
+                    output = 0;
+                    lambda = 0.5;
+                    gameState = GameState.StartMenu;
                 }
 
                 else if (spritePosition.X < MinX)
                 {
-                    spriteSpeed.X *= -1;
-                    spritePosition.X = MinX;
+                    spritePosition.X = origin.X;
+                    outputOld = 0;
+                    output = 0;
+                    lambda = 0.5;
+                    gameState = GameState.StartMenu;
                 }
 
                 frame++;
@@ -232,7 +248,7 @@ namespace WindowsGame1
             // play game
             if (gameState == GameState.Playing)
             {
-                spriteBatch.Draw(rect0, new Vector2(150f, 150f), null, Color.WhiteSmoke, 0f, Vector2.Zero, new Vector2(500f, 500f), SpriteEffects.None, 0f);
+                spriteBatch.Draw(rect0, new Vector2(150f, 150f), null, Color.WhiteSmoke, 0f, Vector2.Zero, new Vector2(BoxWidth, BoxWidth), SpriteEffects.None, 0f);
                 spriteBatch.Draw(rect0, new Vector2(350f, 350f), null, Color.White, 0f, Vector2.Zero, new Vector2(100f, 100f), SpriteEffects.None, 0f);
 
                 if ((spritePosition.X - origin.X > -50) && (spritePosition.X - origin.X < 50))
@@ -246,17 +262,20 @@ namespace WindowsGame1
                 float MouseY2 = ms2.Y - MouseYi + origin.Y + 10;
                 Vector2 MouseXY2 = new Vector2(MouseX2, 0);
                 spriteBatch.Draw(circle0, MouseXY2, null, Color.Green, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
-
-                DrawText(lambda);
             }
+
+            //draw text
+            DrawText(lambdastr, lambda, 20, 45);
+            DrawText(timestr, timer, 20, 65);
+
             spriteBatch.End(); 
             base.Draw(gameTime);
         }
 
-        private void DrawText(double output)
+        private void DrawText(string title, double output, int xCord, int yCord)
         {
             string outputS = ConvertDoubleString(output);
-            spriteBatch.DrawString(font, outputS, new Vector2(20, 45), Color.White);
+            spriteBatch.DrawString(font, title + ": " + outputS, new Vector2(xCord, yCord), Color.White);
         }
 
         public string ConvertDoubleString(double doubleVal)
